@@ -21,6 +21,7 @@ export default class LoginScreen extends React.Component {
   });
 
   render() {
+    const { navigate } = this.props.navigation;
     return(
       <View>
         <View>
@@ -46,6 +47,9 @@ export default class LoginScreen extends React.Component {
           </FormValidationMessage>
         </View>
         <Button raised title='submit'/>
+        <Button raised title='register'
+          onPress={() => navigate('Register')}
+        />
       </View>
     )
   }

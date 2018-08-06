@@ -31,11 +31,15 @@ export default class LoginScreen extends React.Component {
         password: this.state.password,
       })
     }).then((resp)=> resp.json())
-    .then(response => console.log('Success:', response))
+    .then(response => {
+      console.log('Success:', response)
+      this.props.navigation('Login')
+    })
     .catch(erro => console.error('Error:', console.error()))
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return(
       <View>
         <View>
@@ -61,6 +65,9 @@ export default class LoginScreen extends React.Component {
           </FormValidationMessage>
         </View>
         <Button raised title='submit'/>
+        <Button raised title='login'
+          onPress={() => navigate('Login')}
+        />
       </View>
     )
   }
