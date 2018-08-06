@@ -17,6 +17,8 @@ import {
   Button
 } from 'react-native-elements'
 
+import styles from '../StyleSheet'
+
 class HouseScreen extends React.Component {
  constructor(){
    super();
@@ -169,23 +171,6 @@ class HouseScreen extends React.Component {
    )
  }
 }
-styles={
-  input: {
-    height: 20,
-    //padding: 10,
-    // textAlign: 'center'
-  },
-  title: {
-    height: 40,
-    textAlign: 'center',
-    backgroundColor: 'cyan',
-    padding: 20
-  },
-  button: {
-    // textAlign: 'center',
-    height: 40,
-    backgroundColor: 'green',
-  }
-}
+
 
 export default HouseScreen
