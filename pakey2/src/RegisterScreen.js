@@ -21,11 +21,12 @@ export default class LoginScreen extends React.Component {
   });
 
   register(){
-    fetch('http://localhost:1337/register', {
+    fetch('https://ee4f8815.ngrok.io/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({
         username: this.state.email,
         password: this.state.password,
@@ -35,7 +36,7 @@ export default class LoginScreen extends React.Component {
       console.log('Success:', response)
       this.props.navigation('Login')
     })
-    .catch(erro => console.error('Error:', console.error()))
+    .catch(error => console.log('Error:', error))
   }
 
   render() {
@@ -64,9 +65,14 @@ export default class LoginScreen extends React.Component {
             {this.state.password ? null : 'this field is required'}
           </FormValidationMessage>
         </View>
-        <Button raised title='submit'/>
+        <Button raised title='submit'
+        onPress={() => {
+          this.register();
+        }}/>
         <Button raised title='login'
-          onPress={() => navigate('Login')}
+          onPress={() => {
+            navigate('Login');
+          }}
         />
       </View>
     )
