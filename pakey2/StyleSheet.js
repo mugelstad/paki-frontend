@@ -7,7 +7,10 @@ let styles = new StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
+
+  mapContainer: {
+    padding: 2,
+  }
 })
 
 export default styles;
