@@ -46,7 +46,7 @@ export default class LoginScreen extends React.Component {
             {this.state.password ? null : 'this field is required'}
           </FormValidationMessage>
         </View>
-        <Button raised title='submit'/>
+        <Button raised title='submit' onPress={() => navigate('App')}/>
         <Button raised title='register'
           onPress={() => navigate('Register')}
         />
