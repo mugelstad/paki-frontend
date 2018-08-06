@@ -73,11 +73,12 @@ class HouseScreen extends React.Component {
 
 
  setHouseLocation() {
-   fetch('http://localhost:1337/myHouse', {
+   fetch('https://ee4f8815.ngrok.io/myHouse', {
      method: 'POST',
      headers: {
        "Content-Type": "application/json"
      },
+     credentials: 'include', 
      body: JSON.stringify({
        latitude: this.state.latitude,
        longitude: this.state.longitude,
