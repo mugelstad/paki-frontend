@@ -6,9 +6,7 @@ export default class UploadScreen extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
-    images: ["https://searchenginewatch.com/wp-content/uploads/sites/25/2016/08/thinking-emoji.png",
-      "http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-11/256/unamused-face.png"
-            ]
+    images: []
   };
 
   async componentWillMount() {
@@ -34,17 +32,16 @@ export default class UploadScreen extends React.Component {
     const apiUrl = 'https://ee4f8815.ngrok.io/upload';
     const formData = new FormData();
 
-    const formArr = this.state.images.map(photo => {
+    this.state.images.forEach((photo) => {
       const uri = photo;
       const uriParts = uri.split('.');
       const fileType = uriParts[uriParts.length - 1];
-      return ({
+      formData.append('photos[]', {
         uri,
         name: `photo.${fileType}`,
         type: `image/${fileType}`,
       })
     })
-    formData.append('photos', formArr);
 
     const options = {
       method: 'POST',
@@ -83,11 +80,12 @@ export default class UploadScreen extends React.Component {
   let { images } = this.state;
 
   return (
+    <ScrollView>
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <ScrollView>
       <Button
         title="Pick an image from camera roll"
-        onPress={this.pickImage}
+        onPress={() => this.pickImage()}
       />
       {images &&
         images.map(photo => {
@@ -100,6 +98,7 @@ export default class UploadScreen extends React.Component {
       />
       </ScrollView>
     </View>
+    </ScrollView>
   );
 }
 }

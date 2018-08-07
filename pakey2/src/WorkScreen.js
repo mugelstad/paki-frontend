@@ -19,7 +19,7 @@ import {
 
 import styles from '../StyleSheet'
 
-class WorkScreen extends React.Component {
+export default class WorkScreen extends React.Component {
  constructor(){
    super();
    this.state = {
@@ -34,19 +34,6 @@ class WorkScreen extends React.Component {
  static navigationOptions = {
    title: 'Work'
  };
- //
- // currentLocation(){
- //   navigator.geolocation.getCurrentPosition(
- //     (success) => {
- //       this.setState({
- //         latitude: success.coords.latitude,
- //         longitude: success.coords.longitude
- //       })
- //     }, (error) => {
- //       console.log('error', error)
- //     }
- //   )
- // }
 
  getWorkLatLong(){
    var address = this.state.address;
@@ -100,10 +87,23 @@ class WorkScreen extends React.Component {
  }
 
  componentDidMount(){
+   //Get location from storage
    AsyncStorage.getItem('latitude')
    .then((result) => {
      if (result !== 'null'){
        this.setState({latitude: JSON.parse(result)})
+     } else {
+       //Get User's current location on first load
+       navigator.geolocation.getCurrentPosition(
+         (success) => {
+           this.setState({
+             latitude: success.coords.latitude,
+             longitude: success.coords.longitude
+           })
+         }, (error) => {
+           console.log('error', error)
+         }
+       )
      }
    })
    AsyncStorage.getItem('longitude')
@@ -117,7 +117,6 @@ class WorkScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1}}>
-       <View>
          <View>
            <FormInput
              placeholder="Enter your home address"
@@ -128,28 +127,7 @@ class WorkScreen extends React.Component {
              {this.state.address ? null: 'this field is required'}
            </FormValidationMessage>
          </View>
-         <View>
-           <FormInput
-             placeholder="Enter your home's square footage"
-             onChangeText={(text) => this.setState({sqft: text})}
-             value={this.state.sqft}
-           />
-           <FormValidationMessage>
-             {this.state.sqft ? null: 'this field is required'}
-           </FormValidationMessage>
-         </View>
-         <View>
-           <FormInput
-             placeholder="Enter your home's monthly rent"
-             onChangeText={(text) => this.setState({monthlyRent: text})}
-             value={this.state.monthlyRent}
-           />
-           <FormValidationMessage>
-             {this.state.sqft ? null: 'this field is required'}
-           </FormValidationMessage>
-         </View>
          <Button onPress={() => this.getWorkLatLong()} title='save' />
-     </View>
      <MapView
        style={{flex: 1}}
        region={{
@@ -166,6 +144,3 @@ class WorkScreen extends React.Component {
    )
  }
 }
-
-
-export default HouseScreen
