@@ -125,6 +125,7 @@ export default class HouseScreen extends React.Component {
        <View>
          <View>
            <FormInput
+             style={styles.formInput}
              placeholder="Enter your home address"
              onChangeText={(text) => this.setState({address: text})}
              value={this.state.address}
@@ -153,15 +154,17 @@ export default class HouseScreen extends React.Component {
              {this.state.sqft ? null: 'this field is required'}
            </FormValidationMessage>
          </View>
-         <Button onPress={() => this.getHouseLatLong()} title='save' />
+         <Button backgroundColor={'#66cdff'}
+           style={{padding: 10}}
+           onPress={() => this.getHouseLatLong()} title='save' />
      </View>
      <MapView
        style={{flex: 1}}
        region={{
          latitude: this.state.latitude,
          longitude: this.state.longitude,
-         latitudeDelta: .5,
-         longitudeDelta: .25}}
+         latitudeDelta: .0625,
+         longitudeDelta: .03125}}
        onRegionChangeComplete={() => {
          AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
          AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))

@@ -127,7 +127,9 @@ export default class WorkScreen extends React.Component {
              {this.state.address ? null: 'this field is required'}
            </FormValidationMessage>
          </View>
-         <Button onPress={() => this.getWorkLatLong()} title='save' />
+         <Button onPress={() => this.getWorkLatLong()} title='save'
+        backgroundColor={'#66cdff'}
+       style={{padding: 10}}/>
      <MapView
        style={{flex: 1}}
        region={{

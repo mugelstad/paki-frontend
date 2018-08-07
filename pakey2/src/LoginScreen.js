@@ -66,10 +66,14 @@ export default class LoginScreen extends React.Component {
           </FormValidationMessage>
         </View>
         <Button raised title='submit'
+          backgroundColor={'#66c2ff'}
+          style={{padding: 10}}
           onPress={() => {
             this.login();
           }}/>
         <Button raised title='register'
+          backgroundColor={'blue'}
+          style={{padding: 10}}
           onPress={() => navigate('Register')}
         />
       </View>

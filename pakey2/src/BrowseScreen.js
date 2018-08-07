@@ -27,6 +27,7 @@ export default class BrowseScreen extends React.Component {
    this.state = {
      latitude: 0,
      longitude: 0,
+     images: []
    }
  }
 
@@ -68,8 +69,12 @@ export default class BrowseScreen extends React.Component {
    })
    .then(response => response.json())
    .then(responseJson => {
-     if(responseJson.success) {
-       console.log(responseJson);
+     if (responseJson.success){
+       console.log('successful response')
+       // console.log('Rsponse json', JSON.parse(responseJson.picture)[0].img.data.data)
+       img = JSON.parse(responseJson.picture)[0].img.data.data
+       this.setState({images: this.state.images.push(img)});
+       // console.log(this.state.images.length)
      } else {
        console.log('unsuccessful response')
      }
@@ -81,9 +86,9 @@ export default class BrowseScreen extends React.Component {
 
  render() {
    return (
-     <View style={{flex: 1}}>
+     <View style={{flex: 1, height: 150}}>
       <View>
-       <TouchableOpacity onPress={() => this.getPhotos()} value={'get photos'}>
+       <TouchableOpacity onPress={() => this.getPhotos()}>
          <Text>Get Photos</Text>
        </TouchableOpacity>
       </View>
@@ -92,35 +97,22 @@ export default class BrowseScreen extends React.Component {
        region={{
          latitude: this.state.latitude,
          longitude: this.state.longitude,
-         latitudeDelta: .5,
-         longitudeDelta: .25}}
+         latitudeDelta: .25,
+         longitudeDelta: .0125}}
        onRegionChangeComplete={() => {
          AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
          AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
        }}
      />
      <ScrollView
-       style={{flex: 1, height: 150}}
+       style={{flex: 1}}
        showsHorizontalScrollIndicator={true}
        horizontal={true}
        bounces={true}
        >
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 120, height: 120}} borderColor={"white"} borderWidth={10}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-
-
+         {this.state.images.map((base64ImageData) => {
+           <Image source={{uri: base64ImageData}} style={{height: 150, width: 150, flex: 1}}/>
+         })}
      </ScrollView>
    </View>
    )
