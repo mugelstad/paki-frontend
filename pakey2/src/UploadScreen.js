@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, ScrollView } from 'react-native';
-import { Camera, Permissions, ImagePicker } from 'expo';
+import { Camera, Permissions, ImagePicker, Font } from 'expo';
 
 export default class UploadScreen extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
-    images: []
+    images: [],
+    fontLoaded: false
   };
 
   async componentWillMount() {
@@ -14,6 +15,14 @@ export default class UploadScreen extends React.Component {
     .then()
     .catch(error => console.log(error))
     this.setState({ hasCameraPermission: status === 'granted' });
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      proximaNova: require('../assets/font/ProximaNova.ttf')
+    })
+    this.setState({fontLoaded: true})
+
   }
 
   pickImage = async () => {
@@ -51,54 +60,44 @@ export default class UploadScreen extends React.Component {
           'Content-Type': 'multipart/form-data',
         },
       };
-    return fetch(apiUrl, options);
+
+    fetch(apiUrl, options)
+    .then((resp)=> resp.json())
+    .then((json)=> console.log(json))
+    .catch((error) => console.error(error))
   }
 
-  // postPicture() {
-  //   const apiUrl = 'https://ee4f8815.ngrok.io/upload';
-  //   const uri = this.state.image;
-  //   const uriParts = uri.split('.');
-  //   const fileType = uriParts[uriParts.length - 1];
-  //   const formData = new FormData();
-  //     formData.append('photo', {
-  //       uri,
-  //       name: `photo.${fileType}`,
-  //       type: `image/${fileType}`,
-  //     });
-  //   const options = {
-  //     method: 'POST',
-  //     body: formData,
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     };
-  //   return fetch(apiUrl, options);
-  // }
 
   render() {
   let { images } = this.state;
 
   return (
-    <ScrollView>
+
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      {this.state.fontLoaded ? (
+        <Text style={{fontFamily: "proximaNova"}}>Update Home Info </Text>
+      ) : null
+      }
       <ScrollView>
-      <Button
-        title="Pick an image from camera roll"
-        onPress={() => this.pickImage()}
-      />
-      {images &&
-        images.map(photo => {
-          return ( <Image source={{ uri: photo }} style={{ width: 200, height: 200 }} />)
-         })
-       }
-      <Button
-        title="Save"
-        onPress={() => this.postPicture()}
-      />
+        <View style={{flex:1, justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
+        {images &&
+          images.map(photo => {
+            return ( <View style={{padding: 3}} ><Image source={{ uri: photo }} style={{ width: 110, height: 110 }} /></View>)
+           })
+         }
+         <TouchableOpacity onPress={this.pickImage}>
+         <View style={{padding: 3}}>
+           <Image source={{ uri: "https://d1elrd4d6l6916.cloudfront.net/assets/logo-placeholder-4a6b675f981c35903c038c0b826390bd1bd0bc8c7abfd1611a50d93522bd5df5.png" }}
+              style={{ width: 110, height: 110 }}
+            /></View>
+         </TouchableOpacity>
+        </View>
+        <Button
+          title="Save"
+          onPress={() => this.postPicture()}
+        />
       </ScrollView>
     </View>
-    </ScrollView>
   );
 }
 }
