@@ -19,7 +19,7 @@ import {
 
 import styles from '../StyleSheet'
 
-class HouseScreen extends React.Component {
+class WorkScreen extends React.Component {
  constructor(){
    super();
    this.state = {
@@ -32,23 +32,23 @@ class HouseScreen extends React.Component {
  }
 
  static navigationOptions = {
-   title: 'House'
+   title: 'Work'
  };
+ //
+ // currentLocation(){
+ //   navigator.geolocation.getCurrentPosition(
+ //     (success) => {
+ //       this.setState({
+ //         latitude: success.coords.latitude,
+ //         longitude: success.coords.longitude
+ //       })
+ //     }, (error) => {
+ //       console.log('error', error)
+ //     }
+ //   )
+ // }
 
- currentLocation(){
-   navigator.geolocation.getCurrentPosition(
-     (success) => {
-       this.setState({
-         latitude: success.coords.latitude,
-         longitude: success.coords.longitude
-       })
-     }, (error) => {
-       console.log('error', error)
-     }
-   )
- }
-
- getHouseLatLong(){
+ getWorkLatLong(){
    var address = this.state.address;
    address.split(' ').join('+')
    console.log('ADDRESS', address)
@@ -58,12 +58,10 @@ class HouseScreen extends React.Component {
    .then(response => response.json())
    .then(responseJson => {
      if(responseJson) {
-       console.log(responseJson)
        this.setState({
          latitude: Number(responseJson.results[0].geometry.location.lat),
          longitude: Number(responseJson.results[0].geometry.location.lng)
        })
-
      } else {
        console.log('unsuccessful response')
      }
@@ -74,8 +72,8 @@ class HouseScreen extends React.Component {
  }
 
 
- setHouseLocation() {
-   fetch('https://ee4f8815.ngrok.io/myHouse', {
+ setWorkLocation() {
+   fetch('https://ee4f8815.ngrok.io/myWork', {
      method: 'POST',
      headers: {
        "Content-Type": "application/json"
@@ -84,9 +82,6 @@ class HouseScreen extends React.Component {
      body: JSON.stringify({
        latitude: this.state.latitude,
        longitude: this.state.longitude,
-       monthlyRent: this.state.monthlyRent,
-       sqft: this.state.sqft,
-
      })
    })
    .then(response => response.json())
@@ -153,7 +148,7 @@ class HouseScreen extends React.Component {
              {this.state.sqft ? null: 'this field is required'}
            </FormValidationMessage>
          </View>
-         <Button onPress={() => this.getHouseLatLong()} title='save' />
+         <Button onPress={() => this.getWorkLatLong()} title='save' />
      </View>
      <MapView
        style={{flex: 1}}
