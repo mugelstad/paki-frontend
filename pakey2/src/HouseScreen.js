@@ -57,8 +57,8 @@ class HouseScreen extends React.Component {
    })
    .then(response => response.json())
    .then(responseJson => {
-     // console.log('RESPONSE', responseJson)
      if(responseJson) {
+       console.log(responseJson)
        this.setState({
          latitude: Number(responseJson.results[0].geometry.location.lat),
          longitude: Number(responseJson.results[0].geometry.location.lng)
@@ -80,7 +80,7 @@ class HouseScreen extends React.Component {
      headers: {
        "Content-Type": "application/json"
      },
-     credentials: 'include', 
+     credentials: 'include',
      body: JSON.stringify({
        latitude: this.state.latitude,
        longitude: this.state.longitude,

@@ -6,7 +6,7 @@ import {
   FormValidationMessage,
   Button} from 'react-native-elements'
 
-export default class LoginScreen extends React.Component {
+export default class RegisterScreen extends React.Component {
 
   constructor(props) {
     super(props)
