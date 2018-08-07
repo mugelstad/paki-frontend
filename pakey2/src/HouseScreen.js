@@ -19,7 +19,7 @@ import {
 
 import styles from '../StyleSheet'
 
-class HouseScreen extends React.Component {
+export default class HouseScreen extends React.Component {
  constructor(){
    super();
    this.state = {
@@ -34,19 +34,6 @@ class HouseScreen extends React.Component {
  static navigationOptions = {
    title: 'House'
  };
-
- currentLocation(){
-   navigator.geolocation.getCurrentPosition(
-     (success) => {
-       this.setState({
-         latitude: success.coords.latitude,
-         longitude: success.coords.longitude
-       })
-     }, (error) => {
-       console.log('error', error)
-     }
-   )
- }
 
  getHouseLatLong(){
    var address = this.state.address;
@@ -105,10 +92,23 @@ class HouseScreen extends React.Component {
  }
 
  componentDidMount(){
+   //Get location from storage
    AsyncStorage.getItem('latitude')
    .then((result) => {
      if (result !== 'null'){
        this.setState({latitude: JSON.parse(result)})
+     } else {
+       //Get User's current location on first load
+       navigator.geolocation.getCurrentPosition(
+         (success) => {
+           this.setState({
+             latitude: success.coords.latitude,
+             longitude: success.coords.longitude
+           })
+         }, (error) => {
+           console.log('error', error)
+         }
+       )
      }
    })
    AsyncStorage.getItem('longitude')
@@ -171,6 +171,3 @@ class HouseScreen extends React.Component {
    )
  }
 }
-
-
-export default HouseScreen
