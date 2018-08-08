@@ -104,7 +104,9 @@ export default class UploadScreen extends React.Component {
        }
       <Button
         title="Save"
-        onPress={() => this.postPicture()}
+        onPress={() => { this.postPicture()
+        this.props.navigation.navigate('Browse')}
+      }
       />
     </View>
     </ScrollView>

@@ -36,6 +36,7 @@ export default class BrowseScreen extends React.Component {
  };
 
  componentDidMount(){
+   this.getPhotos()
    //Get location from storage
    AsyncStorage.getItem('latitude')
    .then((result) => {
@@ -71,10 +72,11 @@ export default class BrowseScreen extends React.Component {
    .then(responseJson => {
      if (responseJson.success){
        console.log('successful response')
-       // console.log('Rsponse json', JSON.parse(responseJson.picture)[0].img.data.data)
-       img = JSON.parse(responseJson.picture)[0].img.data.data
-       this.setState({images: this.state.images.push(img)});
-       // console.log(this.state.images.length)
+       console.log(responseJson.pictures.length)
+
+       responseJson.pictures.map(picture => {
+         this.setState({images: this.state.images.concat([picture])})
+       })
      } else {
        console.log('unsuccessful response')
      }
@@ -87,12 +89,7 @@ export default class BrowseScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1, height: 150}}>
-      <View>
-       <TouchableOpacity onPress={() => this.getPhotos()}>
-         <Text>Get Photos</Text>
-       </TouchableOpacity>
-      </View>
-     <MapView
+      <MapView
        style={{flex: 1}}
        region={{
          latitude: this.state.latitude,
@@ -110,9 +107,9 @@ export default class BrowseScreen extends React.Component {
        horizontal={true}
        bounces={true}
        >
-         {this.state.images.map((base64ImageData) => {
-           <Image source={{uri: base64ImageData}} style={{height: 150, width: 150, flex: 1}}/>
-         })}
+         {this.state.images.map(picture => (
+           <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
+         ))}
      </ScrollView>
    </View>
    )
