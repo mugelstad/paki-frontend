@@ -12,6 +12,8 @@ import {
   Image
 } from 'react-native';
 
+const { Marker } = MapView;
+
 import {
   FormLabel,
   FormInput,
@@ -27,7 +29,14 @@ export default class BrowseScreen extends React.Component {
    this.state = {
      latitude: 0,
      longitude: 0,
-     images: []
+     images: [],
+     pins: [{
+       id: '123',
+       coordinate: {
+         longitude: -122.414053,
+         latitude: 37.789875
+       }
+     }]
    }
  }
 
@@ -65,53 +74,69 @@ export default class BrowseScreen extends React.Component {
  }
 
  getPhotos(){
-   fetch('https://ee4f8815.ngrok.io/photos', {
-     method: 'GET'
-   })
-   .then(response => response.json())
-   .then(responseJson => {
-     if (responseJson.success){
-       console.log('successful response')
-       console.log(responseJson.pictures.length)
+  fetch('https://ee4f8815.ngrok.io/photos', {
+    method: 'GET'
+  })
+  .then(response => response.json())
+  .then(responseJson => {
+    if (responseJson.success){
+      console.log('successful response')
+      console.log(responseJson.pictures.length)
 
-       responseJson.pictures.map(picture => {
-         this.setState({images: this.state.images.concat([picture])})
-       })
-     } else {
-       console.log('unsuccessful response')
-     }
-   })
-   .catch((err) => {
-     console.log('error fetching', err)
-   });
+      responseJson.pictures.map(picture => {
+        this.setState({images: this.state.images.concat([picture])})
+      })
+    } else {
+      console.log('unsuccessful response')
+    }
+  })
+  .catch((err) => {
+    console.log('error fetching', err)
+  });
+ }
+
+ markerRender(pinArray){
+   return pinArray.map((pin) => (
+   <Marker key={pin.id}
+     onPress={()=>this.displayHouse(pin.id)}
+     coordinate={pin.coordinate}/>
+   ))
+ }
+
+ displayHouse(_id) {
+   this.props.navigation.navigate('HouseInfo', { _id })
  }
 
  render() {
    return (
      <View style={{flex: 1, height: 150}}>
-      <MapView
-       style={{flex: 1}}
-       region={{
-         latitude: this.state.latitude,
-         longitude: this.state.longitude,
-         latitudeDelta: .25,
-         longitudeDelta: .0125}}
-       onRegionChangeComplete={() => {
-         AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
-         AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
-       }}
-     />
-     <ScrollView
-       style={{flex: 1}}
-       showsHorizontalScrollIndicator={true}
-       horizontal={true}
-       bounces={true}
-       >
-         {this.state.images.map(picture => (
-           <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
-         ))}
-     </ScrollView>
-   </View>
+        <MapView
+         style={{flex: 1}}
+         region={{
+           latitude: this.state.latitude,
+           longitude: this.state.longitude,
+           latitudeDelta: .25,
+           longitudeDelta: .0125}}
+         onRegionChangeComplete={() => {
+           AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
+           AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
+         }}
+        >
+        {this.markerRender(this.state.pins)}
+        </MapView>
+       <ScrollView
+         style={{flex: 1}}
+         showsHorizontalScrollIndicator={true}
+         horizontal={true}
+         bounces={true}
+         >
+           {this.state.images.map(picture => (
+             <TouchableOpacity>
+             <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
+             </TouchableOpacity>
+           ))}
+       </ScrollView>
+     </View>
    )
  }
 }
