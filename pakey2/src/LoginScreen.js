@@ -33,8 +33,9 @@ export default class LoginScreen extends React.Component {
       })
     }).then((resp)=> resp.json())
     .then(response => {
-      console.log('Success:', response)
-      this.props.navigation.navigate('House')
+      if (response.success){
+        this.props.navigation.navigate('House')
+      }
     })
     .catch(error => console.log('Error:', error))
   }

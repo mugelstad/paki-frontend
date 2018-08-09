@@ -18,6 +18,7 @@ import {
 } from 'react-native-elements'
 
 import styles from '../StyleSheet'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 export default class WorkScreen extends React.Component {
  constructor(){
@@ -32,8 +33,20 @@ export default class WorkScreen extends React.Component {
  }
 
  static navigationOptions = {
-   title: 'Work'
- };
+   title: 'Work',
+   tabBarLabel: 'Work',
+   drawerIcon: ({tintColor}) => {
+     return (
+       <MaterialIcons
+         name="work"
+         size={24}
+         style={{color: tintColor}}
+         >
+
+         </MaterialIcons>
+     )
+   }
+ }
 
  getWorkLatLong(){
    var address = this.state.address;
@@ -117,6 +130,18 @@ export default class WorkScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1}}>
+       <View style={{padding: 30}}>
+         <TouchableOpacity
+           onPress={() => this.props.navigation.openDrawer()}>
+           <MaterialIcons
+             name="menu"
+             size={24}
+             style={{color: 'black'}}
+             >
+           </MaterialIcons>
+         </TouchableOpacity>
+         <TextInput>Work Information</TextInput>
+       </View>
          <View>
            <FormInput
              placeholder="Enter your home address"

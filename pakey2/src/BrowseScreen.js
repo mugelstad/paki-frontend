@@ -19,6 +19,7 @@ import {
   Button
 } from 'react-native-elements'
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import styles from '../StyleSheet'
 
 export default class BrowseScreen extends React.Component {
@@ -32,12 +33,23 @@ export default class BrowseScreen extends React.Component {
  }
 
  static navigationOptions = {
-   title: 'Browse'
- };
+   title: 'Browse',
+   tabBarLabel: 'Browse',
+   drawerIcon: ({tintColor}) => {
+     return (
+       <MaterialIcons
+         name="near-me"
+         size={24}
+         style={{color: tintColor}}
+         >
+         </MaterialIcons>
+     )
+   }
+ }
 
  componentDidMount(){
    this.getPhotos()
-   //Get location from storage
+   // Get location from storage
    AsyncStorage.getItem('latitude')
    .then((result) => {
      if (result !== 'null'){
@@ -71,7 +83,6 @@ export default class BrowseScreen extends React.Component {
    .then(response => response.json())
    .then(responseJson => {
      if (responseJson.success){
-       console.log('successful response')
        console.log(responseJson.pictures.length)
 
        responseJson.pictures.map(picture => {
@@ -89,6 +100,23 @@ export default class BrowseScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1, height: 150}}>
+       <View style={{padding: 30}}>
+         <TouchableOpacity
+           onPress={() => this.props.navigation.openDrawer()}>
+           <MaterialIcons
+             name="menu"
+             size={24}
+             style={{color: 'black'}}
+             >
+           </MaterialIcons>
+         </TouchableOpacity>
+         <TextInput>Browse Houses</TextInput>
+       </View>
+       <View>
+       <TouchableOpacity>
+         <Image source={'../menu.png'}></Image>
+       </TouchableOpacity>
+       </View>
       <MapView
        style={{flex: 1}}
        region={{
@@ -108,7 +136,9 @@ export default class BrowseScreen extends React.Component {
        bounces={true}
        >
          {this.state.images.map(picture => (
+           <TouchableOpacity>
            <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
+           </TouchableOpacity>
          ))}
      </ScrollView>
    </View>
