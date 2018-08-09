@@ -12,6 +12,8 @@ import {
   Image
 } from 'react-native';
 
+const { Marker } = MapView;
+
 import {
   FormLabel,
   FormInput,
@@ -27,6 +29,14 @@ export default class BrowseScreen extends React.Component {
    this.state = {
      latitude: 0,
      longitude: 0,
+     images: [],
+     pins: [{
+       id: '123',
+       coordinate: {
+         longitude: -122.414053,
+         latitude: 37.789875
+       }
+     }]
    }
  }
 
@@ -35,6 +45,7 @@ export default class BrowseScreen extends React.Component {
  };
 
  componentDidMount(){
+   this.getPhotos()
    //Get location from storage
    AsyncStorage.getItem('latitude')
    .then((result) => {
@@ -63,66 +74,69 @@ export default class BrowseScreen extends React.Component {
  }
 
  getPhotos(){
-   fetch('https://ee4f8815.ngrok.io/photos', {
-     method: 'GET'
-   })
-   .then(response => response.json())
-   .then(responseJson => {
-     if(responseJson.success) {
-       console.log(responseJson);
-     } else {
-       console.log('unsuccessful response')
-     }
-   })
-   .catch((err) => {
-     console.log('error fetching', err)
-   });
+  fetch('https://ee4f8815.ngrok.io/photos', {
+    method: 'GET'
+  })
+  .then(response => response.json())
+  .then(responseJson => {
+    if (responseJson.success){
+      console.log('successful response')
+      console.log(responseJson.pictures.length)
+
+      responseJson.pictures.map(picture => {
+        this.setState({images: this.state.images.concat([picture])})
+      })
+    } else {
+      console.log('unsuccessful response')
+    }
+  })
+  .catch((err) => {
+    console.log('error fetching', err)
+  });
+ }
+
+ markerRender(pinArray){
+   return pinArray.map((pin) => (
+   <Marker key={pin.id}
+     onPress={()=>this.displayHouse(pin.id)}
+     coordinate={pin.coordinate}/>
+   ))
+ }
+
+ displayHouse(_id) {
+   this.props.navigation.navigate('HouseInfo', { _id })
  }
 
  render() {
    return (
-     <View style={{flex: 1}}>
-      <View>
-       <TouchableOpacity onPress={() => this.getPhotos()} value={'get photos'}>
-         <Text>Get Photos</Text>
-       </TouchableOpacity>
-      </View>
-     <MapView
-       style={{flex: 1}}
-       region={{
-         latitude: this.state.latitude,
-         longitude: this.state.longitude,
-         latitudeDelta: .5,
-         longitudeDelta: .25}}
-       onRegionChangeComplete={() => {
-         AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
-         AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
-       }}
-     />
-     <ScrollView
-       style={{flex: 1, height: 150}}
-       showsHorizontalScrollIndicator={true}
-       horizontal={true}
-       bounces={true}
-       >
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 120, height: 120}} borderColor={"white"} borderWidth={10}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-         <Image source={{uri:'https://facebook.github.io/react-native/img/favicon.png', width: 64, height: 64}}/>
-
-
-     </ScrollView>
-   </View>
+     <View style={{flex: 1, height: 150}}>
+        <MapView
+         style={{flex: 1}}
+         region={{
+           latitude: this.state.latitude,
+           longitude: this.state.longitude,
+           latitudeDelta: .25,
+           longitudeDelta: .0125}}
+         onRegionChangeComplete={() => {
+           AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
+           AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
+         }}
+        >
+        {this.markerRender(this.state.pins)}
+        </MapView>
+       <ScrollView
+         style={{flex: 1}}
+         showsHorizontalScrollIndicator={true}
+         horizontal={true}
+         bounces={true}
+         >
+           {this.state.images.map(picture => (
+             <TouchableOpacity>
+             <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
+             </TouchableOpacity>
+           ))}
+       </ScrollView>
+     </View>
    )
  }
 }

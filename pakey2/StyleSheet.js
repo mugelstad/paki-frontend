@@ -10,6 +10,10 @@ let styles = new StyleSheet.create({
 
   mapContainer: {
     padding: 2,
+  },
+  formInput: {
+    margin: 10,
+    borderWidth: 10
   }
 })
 

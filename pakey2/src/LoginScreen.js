@@ -21,7 +21,7 @@ export default class LoginScreen extends React.Component {
   });
 
   login(){
-    fetch('https://ee4f8815.ngrok.io/login', {
+    fetch('https://ee4f8815.ngrok.io/auth/local', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -66,10 +66,14 @@ export default class LoginScreen extends React.Component {
           </FormValidationMessage>
         </View>
         <Button raised title='submit'
+          backgroundColor={'#66c2ff'}
+          style={{padding: 10}}
           onPress={() => {
             this.login();
           }}/>
         <Button raised title='register'
+          backgroundColor={'blue'}
+          style={{padding: 10}}
           onPress={() => navigate('Register')}
         />
       </View>

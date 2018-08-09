@@ -1,13 +1,14 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Button, Image, ScrollView, ImageBackground} from 'react-native';
 import { Camera, Permissions, ImagePicker, Font } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
 export default class UploadScreen extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
     images: [],
-    fontLoaded: false
+    fontLoaded: null
   };
 
   async componentWillMount() {
@@ -18,11 +19,10 @@ export default class UploadScreen extends React.Component {
   }
 
   async componentDidMount() {
-    await Font.loadAsync({
-      proximaNova: require('../assets/font/ProximaNova.ttf')
-    })
-    this.setState({fontLoaded: true})
-
+    // await Font.loadAsync({
+    //   proximaNova: require('../assets/font/ProximaNova.ttf')
+    // })
+    // this.setState({fontLoaded: true})
   }
 
   pickImage = async () => {
@@ -63,10 +63,14 @@ export default class UploadScreen extends React.Component {
 
     fetch(apiUrl, options)
     .then((resp)=> resp.json())
-    .then((json)=> console.log(json))
+    .then((json)=> this.props.navigation.navigate('Browse'))
     .catch((error) => console.error(error))
   }
 
+  deletePicture = (photo) => {
+    var arrayMinusOne = this.state.images.filter(img => !(img === photo));
+    this.setState({images: arrayMinusOne})
+  }
 
   render() {
   let { images } = this.state;
@@ -75,16 +79,24 @@ export default class UploadScreen extends React.Component {
 
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       {this.state.fontLoaded ? (
-        <Text style={{fontFamily: "proximaNova"}}>Update Home Info </Text>
+        <Text style={{fontFamily: 'proximaNova', fontSize: 30}}>Update Home Info</Text>
       ) : null
       }
       <ScrollView>
         <View style={{flex:1, justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
-        {images &&
-          images.map(photo => {
-            return ( <View style={{padding: 3}} ><Image source={{ uri: photo }} style={{ width: 110, height: 110 }} /></View>)
-           })
-         }
+          {images &&
+            images.map(photo => {
+              return (
+                <View key={photo} style={{ width: 110, height: 110, padding: 3}}>
+                  <ImageBackground source={{ uri: photo }} style={{ width: 110, height: 110}}>
+                    <TouchableOpacity onPress={() => this.deletePicture(photo)}>
+                      <Ionicons name="ios-close-circle" size={32} />
+                    </TouchableOpacity>
+                  </ImageBackground>
+                </View>
+              )
+             })
+           }
          <TouchableOpacity onPress={this.pickImage}>
          <View style={{padding: 3}}>
            <Image source={{ uri: "https://d1elrd4d6l6916.cloudfront.net/assets/logo-placeholder-4a6b675f981c35903c038c0b826390bd1bd0bc8c7abfd1611a50d93522bd5df5.png" }}
