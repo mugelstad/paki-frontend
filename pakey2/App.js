@@ -2,7 +2,6 @@ import {createSwitchNavigator, createStackNavigator} from 'react-navigation';
 import LoginScreen from './src/LoginScreen'
 import HouseScreen from './src/HouseScreen'
 import RegisterScreen from './src/RegisterScreen'
-
 import UploadScreen from './src/UploadScreen'
 import WorkScreen from './src/WorkScreen'
 import BrowseScreen from './src/BrowseScreen'

@@ -12,6 +12,8 @@ import {
   Image
 } from 'react-native';
 
+const { Marker } = MapView;
+
 import {
   FormLabel,
   FormInput,
@@ -28,7 +30,14 @@ export default class BrowseScreen extends React.Component {
    this.state = {
      latitude: 0,
      longitude: 0,
-     images: []
+     images: [],
+     pins: [{
+       id: '123',
+       coordinate: {
+         longitude: -122.414053,
+         latitude: 37.789875
+       }
+     }]
    }
  }
 
@@ -85,16 +94,28 @@ export default class BrowseScreen extends React.Component {
      if (responseJson.success){
        console.log(responseJson.pictures.length)
 
-       responseJson.pictures.map(picture => {
-         this.setState({images: this.state.images.concat([picture])})
-       })
-     } else {
-       console.log('unsuccessful response')
-     }
-   })
-   .catch((err) => {
-     console.log('error fetching', err)
-   });
+      responseJson.pictures.map(picture => {
+        this.setState({images: this.state.images.concat([picture])})
+      })
+    } else {
+      console.log('unsuccessful response')
+    }
+  })
+  .catch((err) => {
+    console.log('error fetching', err)
+  });
+ }
+
+ markerRender(pinArray){
+   return pinArray.map((pin) => (
+   <Marker key={pin.id}
+     onPress={()=>this.displayHouse(pin.id)}
+     coordinate={pin.coordinate}/>
+   ))
+ }
+
+ displayHouse(_id) {
+   this.props.navigation.navigate('HouseInfo', { _id })
  }
 
  render() {
@@ -128,6 +149,7 @@ export default class BrowseScreen extends React.Component {
          AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
          AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
        }}
+       {this.markerRender(this.state.pins)}
      />
      <ScrollView
        style={{flex: 1}}

@@ -77,7 +77,10 @@ export default class UploadScreen extends React.Component {
           'Content-Type': 'multipart/form-data',
         },
       };
+<<<<<<< HEAD
     console.log('POST PICTURE')
+=======
+>>>>>>> 315c989bc516236d68610154cd0c8a21afa867f7
 
     fetch(apiUrl, options)
     .then((resp)=> resp.json())
@@ -100,6 +103,7 @@ export default class UploadScreen extends React.Component {
         <Text style={{fontFamily: 'proximaNova', fontSize: 30}}>Update Home Info</Text>
       ) : null
       }
+<<<<<<< HEAD
       <View style={{padding: 30}}>
         <TouchableOpacity
           onPress={() => this.props.navigation.openDrawer()}>
@@ -112,6 +116,8 @@ export default class UploadScreen extends React.Component {
         </TouchableOpacity>
         <TextInput>Upload House Photos</TextInput>
       </View>
+=======
+>>>>>>> 315c989bc516236d68610154cd0c8a21afa867f7
       <ScrollView>
         <View style={{flex:1, justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
           {images &&
