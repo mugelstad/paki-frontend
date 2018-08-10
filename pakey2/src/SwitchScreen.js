@@ -25,7 +25,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import styles from '../StyleSheet'
 
-export default class BrowseScreen extends React.Component {
+export default class SwitchScreen extends React.Component {
  constructor(){
    super();
    this.state = {
@@ -38,14 +38,13 @@ export default class BrowseScreen extends React.Component {
          longitude: -122.414053,
          latitude: 37.789875
        }
-     }],
-     houses: [],
+     }]
    }
  }
 
  static navigationOptions = {
-   title: 'Browse',
-   tabBarLabel: 'Browse',
+   title: 'Switch',
+   tabBarLabel: 'Switch',
    drawerIcon: ({tintColor}) => {
      return (
        <MaterialIcons
@@ -58,9 +57,8 @@ export default class BrowseScreen extends React.Component {
    }
  }
 
-componentDidMount(){
-  this.getPhotos()
-  this.getHouses()
+ componentDidMount(){
+   this.getPhotosByHouseId()
    // Get location from storage
    AsyncStorage.getItem('latitude')
    .then((result) => {
@@ -90,67 +88,29 @@ componentDidMount(){
    })
  }
 
- displayHouse(_id) {
-   this.props.navigation.navigate('HouseInfo', { _id })
- }
-
- getHouses() {
-   fetch('https://fe4150e6.ngrok.io/houses', {
+ getPhotosByHouseId(){
+   fetch(`https://fe4150e6.ngrok.io/switchPhotos?houseId=${this.props.navigation.getParam('houseId')}`, {
      method: 'GET'
    })
    .then(response => response.json())
    .then(responseJson => {
      if (responseJson.success){
-       responseJson.houses.map(house => {
-         this.setState({houses: this.state.houses.concat([house])})
-       })
-     } else {
-       console.log('unsuccessful response in getHouses')
-     }
-   })
-   .catch(err => {
-     console.log('Error fetching houses', err)
-   })
+       let images = [];
+       let pictureArr = responseJson.pictures;
+
+      responseJson.pictures.map(picture => {
+        this.setState({images: this.state.images.concat([picture])})
+      })
+    } else {
+      console.log('unsuccessful response')
+    }
+  })
+  .catch((err) => {
+    console.log('error fetching', err)
+  });
  }
 
- getPhotos(){
-    fetch('https://ee4f8815.ngrok.io/photos', {
-      method: 'GET'
-    })
-    .then(response => response.json())
-    .then(responseJson => {
-      if (responseJson.success){
-        console.log(responseJson.pictures.length)
-
-       responseJson.pictures.map(picture => {
-         this.setState({images: this.state.images.concat([picture])})
-       })
-     } else {
-       console.log('unsuccessful response')
-     }
-   })
-   .catch((err) => {
-     console.log('error fetching', err)
-   });
-  }
-
-
  render() {
-   const renderPins = () => {
-     if (this.state.houses[0]) {
-       return this.state.houses.map(house => {
-         return (<MapView.Marker
-           coordinate={{
-             latitude: Number(house.latitude),
-             longitude: Number(house.longitude),
-           }}
-           title={house.monthlyRent + ''}
-           onSelect={() => this.props.navigation.navigate('Switch', {houseId: house._id})}>
-         </MapView.Marker>)
-       })
-     }
-   }
-
    return (
      <View style={{flex: 1, height: 150}}>
        <View style={{padding: 30}}>
@@ -181,7 +141,6 @@ componentDidMount(){
          AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
          AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
        }}>
-       {renderPins()}
 
      </MapView>
      <ScrollView
@@ -190,9 +149,10 @@ componentDidMount(){
        horizontal={true}
        bounces={true}
        >
+         {console.log('IMAGES',this.state.images[0])}
          {this.state.images.map(picture => (
            <TouchableOpacity>
-           <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
+             <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
            </TouchableOpacity>
          ))}
      </ScrollView>

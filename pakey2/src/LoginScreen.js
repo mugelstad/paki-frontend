@@ -21,7 +21,7 @@ export default class LoginScreen extends React.Component {
   });
 
   login(){
-    fetch('https://ee4f8815.ngrok.io/auth/local', {
+    fetch('https://fe4150e6.ngrok.io/auth/local', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
