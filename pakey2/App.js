@@ -8,7 +8,7 @@ import BrowseScreen from './src/BrowseScreen'
 
 
 const AppStack = createStackNavigator({ Browse: BrowseScreen, Upload: UploadScreen, House: HouseScreen, Work: WorkScreen,  })
-const AuthStack = createStackNavigator({ Login: LoginScreen, Register: RegisterScreen });
+const AuthStack = createStackNavigator({ Register: RegisterScreen, Login: LoginScreen, });
 
 export default createSwitchNavigator({
   App: AppStack,

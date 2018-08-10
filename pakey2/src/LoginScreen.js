@@ -21,7 +21,7 @@ export default class LoginScreen extends React.Component {
   });
 
   login(){
-    fetch('https://ee4f8815.ngrok.io/auth/local', {
+    fetch('https://a4e99e29.ngrok.io/auth/local', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,10 +31,12 @@ export default class LoginScreen extends React.Component {
         username: this.state.email,
         password: this.state.password,
       })
-    }).then((resp)=> resp.json())
-    .then(response => {
-      console.log('Success:', response)
-      this.props.navigation.navigate('House')
+    }).then((resp)=> {
+      if(resp.ok) {
+        this.props.navigation.navigate('Upload')
+      } else {
+        this.props.navigation.navigate('login');
+      }
     })
     .catch(error => console.log('Error:', error))
   }

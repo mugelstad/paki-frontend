@@ -38,7 +38,7 @@ export default class UploadScreen extends React.Component {
   };
 
   postPicture() {
-    const apiUrl = 'https://ee4f8815.ngrok.io/upload';
+    const apiUrl = 'https://a4e99e29.ngrok.io/upload';
     const formData = new FormData();
 
     this.state.images.forEach((photo) => {
