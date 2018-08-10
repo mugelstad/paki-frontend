@@ -73,7 +73,7 @@ export default class WorkScreen extends React.Component {
 
 
  setWorkLocation() {
-   fetch('https://ee4f8815.ngrok.io/myWork', {
+   fetch('https://fe4150e6.ngrok.io/myWork', {
      method: 'POST',
      headers: {
        "Content-Type": "application/json"

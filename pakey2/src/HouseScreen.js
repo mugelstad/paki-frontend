@@ -74,7 +74,7 @@ export default class HouseScreen extends React.Component {
 
 
  setHouseLocation() {
-   fetch('https://ee4f8815.ngrok.io/myHouse', {
+   fetch('https://fe4150e6.ngrok.io/myHouse', {
      method: 'POST',
      headers: {
        "Content-Type": "application/json"
