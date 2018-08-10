@@ -17,6 +17,7 @@ import {
   Button
 } from 'react-native-elements'
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import styles from '../StyleSheet'
 
 export default class HouseScreen extends React.Component {
@@ -32,8 +33,19 @@ export default class HouseScreen extends React.Component {
  }
 
  static navigationOptions = {
-   title: 'House'
- };
+   title: 'House',
+   tabBarLabel: 'House',
+   drawerIcon: ({tintColor}) => {
+     return (
+       <MaterialIcons
+         name="home"
+         size={24}
+         style={{color: tintColor}}
+         >
+         </MaterialIcons>
+     )
+   }
+ }
 
  getHouseLatLong(){
    var address = this.state.address;
@@ -62,7 +74,7 @@ export default class HouseScreen extends React.Component {
 
 
  setHouseLocation() {
-   fetch('https://ee4f8815.ngrok.io/myHouse', {
+   fetch('https://fe4150e6.ngrok.io/myHouse', {
      method: 'POST',
      headers: {
        "Content-Type": "application/json"
@@ -122,6 +134,18 @@ export default class HouseScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1}}>
+       <View style={{padding: 30}}>
+         <TouchableOpacity
+           onPress={() => this.props.navigation.openDrawer()}>
+           <MaterialIcons
+             name="menu"
+             size={24}
+             style={{color: 'black'}}
+             >
+           </MaterialIcons>
+         </TouchableOpacity>
+         <TextInput>House Information</TextInput>
+       </View>
        <View>
          <View>
            <FormInput

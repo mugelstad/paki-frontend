@@ -1,9 +1,26 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, ScrollView, ImageBackground} from 'react-native';
+import { Text, View, TouchableOpacity, Button, Image, ScrollView, ImageBackground, TextInput} from 'react-native';
 import { Camera, Permissions, ImagePicker, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 export default class UploadScreen extends React.Component {
+
+  static navigationOptions = {
+    title: 'Upload',
+    tabBarLabel: 'Upload',
+    drawerIcon: ({tintColor}) => {
+      return (
+        <MaterialIcons
+          name="insert-photo"
+          size={24}
+          style={{color: tintColor}}
+          >
+          </MaterialIcons>
+      )
+    }
+  }
+
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
@@ -18,6 +35,8 @@ export default class UploadScreen extends React.Component {
     this.setState({ hasCameraPermission: status === 'granted' });
   }
 
+
+  //Fonts
   async componentDidMount() {
     // await Font.loadAsync({
     //   proximaNova: require('../assets/font/ProximaNova.ttf')
@@ -38,7 +57,7 @@ export default class UploadScreen extends React.Component {
   };
 
   postPicture() {
-    const apiUrl = 'https://a4e99e29.ngrok.io/upload';
+    const apiUrl = 'https://fe4150e6.ngrok.io/upload';
     const formData = new FormData();
 
     this.state.images.forEach((photo) => {
@@ -82,6 +101,18 @@ export default class UploadScreen extends React.Component {
         <Text style={{fontFamily: 'proximaNova', fontSize: 30}}>Update Home Info</Text>
       ) : null
       }
+      <View style={{padding: 30}}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.openDrawer()}>
+          <MaterialIcons
+            name="menu"
+            size={24}
+            style={{color: 'black'}}
+            >
+          </MaterialIcons>
+        </TouchableOpacity>
+        <TextInput>Upload House Photos</TextInput>
+      </View>
       <ScrollView>
         <View style={{flex:1, justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
           {images &&

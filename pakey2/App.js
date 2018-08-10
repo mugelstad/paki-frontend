@@ -5,15 +5,20 @@ import RegisterScreen from './src/RegisterScreen'
 import UploadScreen from './src/UploadScreen'
 import WorkScreen from './src/WorkScreen'
 import BrowseScreen from './src/BrowseScreen'
+import MenuNavigator from './src/Navigate'
+import SwitchScreen from './src/SwitchScreen'
 
+const AppStack = createStackNavigator({ Upload: UploadScreen, Switch: SwitchScreen, Browse: BrowseScreen, Work: WorkScreen, House: HouseScreen})
+const AuthStack = createStackNavigator({ Login: LoginScreen, Register: RegisterScreen });
 
-const AppStack = createStackNavigator({ Browse: BrowseScreen, Upload: UploadScreen, House: HouseScreen, Work: WorkScreen,  })
-const AuthStack = createStackNavigator({ Register: RegisterScreen, Login: LoginScreen, });
 
 export default createSwitchNavigator({
   App: AppStack,
-  Auth: AuthStack
+  Auth: AuthStack,
+  Menu: MenuNavigator
 },
 {
-  initialRouteName: 'App'
+  initialRouteName: 'Auth'
 })
+
+// export default MenuNavigator;
