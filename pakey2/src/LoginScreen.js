@@ -31,10 +31,11 @@ export default class LoginScreen extends React.Component {
         username: this.state.email,
         password: this.state.password,
       })
-    }).then((resp)=> resp.json())
-    .then(response => {
-      if (response.success){
-        this.props.navigation.navigate('House')
+    }).then((resp)=> {
+      if(resp.ok) {
+        this.props.navigation.navigate('Upload')
+      } else {
+        this.props.navigation.navigate('login');
       }
     })
     .catch(error => console.log('Error:', error))
