@@ -32,6 +32,7 @@ export default class SwitchScreen extends React.Component {
      latitude: 0,
      longitude: 0,
      images: [],
+     monthlyRent:0,
      pins: [{
        id: '123',
        coordinate: {
@@ -89,18 +90,20 @@ export default class SwitchScreen extends React.Component {
  }
 
  getPhotosByHouseId(){
-   fetch(`https://fe4150e6.ngrok.io/switchPhotos?houseId=${this.props.navigation.getParam('houseId')}`, {
+   fetch(`http://4cb55702.ngrok.io/switchInfo?houseId=${this.props.navigation.getParam('houseId')}`, {
      method: 'GET'
    })
    .then(response => response.json())
    .then(responseJson => {
      if (responseJson.success){
-       let images = [];
-       let pictureArr = responseJson.pictures;
-
-      responseJson.pictures.map(picture => {
-        this.setState({images: this.state.images.concat([picture])})
-      })
+      console.log(responseJson.house)
+      this.setState({
+        latitude: responseJson.house.latitude,
+        longitude: responseJson.house.longitude,
+        monthlyRent: responseJson.house.monthlyRent,
+        sqft: responseJson.house.sqft,
+        images: responseJson.pictures
+       })
     } else {
       console.log('unsuccessful response')
     }
@@ -113,48 +116,50 @@ export default class SwitchScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1, height: 150}}>
-       <View style={{padding: 30}}>
-         <TouchableOpacity
-           onPress={() => this.props.navigation.openDrawer()}>
-           <MaterialIcons
-             name="menu"
-             size={24}
-             style={{color: 'black'}}
-             >
+       <ScrollView>
+       <View style={{padding: 20}}>
+         <TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
+           <MaterialIcons name="menu" size={24} style={{color: 'black'}}>
            </MaterialIcons>
          </TouchableOpacity>
-         <TextInput>Browse Houses</TextInput>
        </View>
-       <View>
-       <TouchableOpacity>
-         <Image source={'../menu.png'}></Image>
-       </TouchableOpacity>
-       </View>
-      <MapView
-       style={{flex: 1}}
-       region={{
-         latitude: this.state.latitude,
-         longitude: this.state.longitude,
-         latitudeDelta: .25,
-         longitudeDelta: .0125}}
-       onRegionChangeComplete={() => {
-         AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
-         AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
-       }}>
-
-     </MapView>
-     <ScrollView
-       style={{flex: 1}}
-       showsHorizontalScrollIndicator={true}
-       horizontal={true}
-       bounces={true}
-       >
-         {console.log('IMAGES',this.state.images[0])}
-         {this.state.images.map(picture => (
-           <TouchableOpacity>
-             <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
-           </TouchableOpacity>
-         ))}
+       <ScrollView
+         style={{flex: 1}}
+         showsHorizontalScrollIndicator={true}
+         horizontal={true}
+         bounces={true}
+         >
+           {this.state.images.map(picture => (
+             <TouchableOpacity>
+               <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 300, width: 300}}/>
+             </TouchableOpacity>
+           ))}
+       </ScrollView>
+       <View style={{padding:30}}>
+        <MapView
+         style={{flex: 1, height: 300}}
+         region={{
+           latitude: this.state.latitude,
+           longitude: this.state.longitude,
+           latitudeDelta: .25,
+           longitudeDelta: .0125}}
+         onRegionChangeComplete={() => {
+           AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
+           AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
+         }}>
+         <Marker
+           coordinate={{
+             latitude: Number(this.state.latitude),
+             longitude: Number(this.state.longitude),
+           }}>
+         </Marker>
+       </MapView>
+      </View>
+      <View style={{padding: 20}}>
+        <Text>monthly rent: </Text>
+        <Text>address: </Text>
+        <Text>area: </Text>
+      </View>
      </ScrollView>
    </View>
    )
