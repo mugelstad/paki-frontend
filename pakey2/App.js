@@ -1,4 +1,6 @@
-import {createSwitchNavigator, createStackNavigator} from 'react-navigation';
+import {createBottomTabNavigator, createSwitchNavigator, createStackNavigator} from 'react-navigation';
+import { Icon } from 'expo';
+import  React from 'react';
 import LoginScreen from './src/LoginScreen'
 import HouseScreen from './src/HouseScreen'
 import RegisterScreen from './src/RegisterScreen'
@@ -7,18 +9,80 @@ import WorkScreen from './src/WorkScreen'
 import BrowseScreen from './src/BrowseScreen'
 import MenuNavigator from './src/Navigate'
 import SwitchScreen from './src/SwitchScreen'
+import SavedScreen from './src/SavedScreen'
 
-const AppStack = createStackNavigator({ Browse: BrowseScreen, Switch: SwitchScreen, Upload: UploadScreen,  Work: WorkScreen, House: HouseScreen})
-const AuthStack = createStackNavigator({ Login: LoginScreen, Register: RegisterScreen });
+const AppStack = createStackNavigator({
+  Browse: BrowseScreen,
+  Switch: SwitchScreen
+})
+
+AppStack.navigationOptions = {
+  tabBarLabel: 'Explore',
+  tabBarIcon: ({focused}) => (
+    <Icon.Ionicons
+        name={'ios-search-outline'}
+        size={26}
+      />
+  )
+}
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Register: RegisterScreen
+});
+
+const SettingsStack = createStackNavigator({
+  Upload: UploadScreen,
+  House: HouseScreen,
+  Work: WorkScreen
+})
+SettingsStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({focused}) => (
+    <Icon.EvilIcons
+      name='user'
+      size={26}
+    />
+  )
+}
+const SavedStack = createStackNavigator({
+  Saved: SavedScreen,
+})
+
+SavedStack.navigationOptions = {
+  tabBarLabel: 'Saved',
+  tabBarIcon: () => (
+    <Icon.EvilIcons
+      name='heart'
+      size={26}
+    />)
+}
 
 
+
+const tabs = createBottomTabNavigator({
+  Browse: AppStack, Saved: SavedStack, Settings: SettingsStack
+})
+
+
+// HomeStack.navigationOptions = {
+//   tabBarLabel: 'Read',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={
+//         Platform.OS === 'ios'
+//           ? `ios-glasses${focused ? '' : '-outline'}`
+//           : 'md-glasses'
+//       }
+//     />
+//   ),
+// };
 export default createSwitchNavigator({
-  App: AppStack,
-  Auth: AuthStack,
-  Menu: MenuNavigator
+  Main: tabs,
+  Auth: AuthStack
 },
 {
-  initialRouteName: 'App'
+  initialRouteName: 'Auth'
 })
 
 // export default MenuNavigator;

@@ -35,6 +35,7 @@ export default class WorkScreen extends React.Component {
  static navigationOptions = {
    title: 'Work',
    tabBarLabel: 'Work',
+   drawerLabel: 'Work',
    drawerIcon: ({tintColor}) => {
      return (
        <MaterialIcons
@@ -51,13 +52,14 @@ export default class WorkScreen extends React.Component {
  getWorkLatLong(){
    var address = this.state.address;
    address.split(' ').join('+')
-   console.log('ADDRESS', address)
    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_MAPS_API_KEY}`, {
      method: 'GET',
    })
    .then(response => response.json())
    .then(responseJson => {
      if(responseJson) {
+       console.log('@@getWorkLatLong', this.state.address)
+       console.log('@@getWorkLatLong responseJson', responseJson)
        this.setState({
          latitude: Number(responseJson.results[0].geometry.location.lat),
          longitude: Number(responseJson.results[0].geometry.location.lng)
@@ -72,14 +74,16 @@ export default class WorkScreen extends React.Component {
  }
 
 
- setWorkLocation() {
-   fetch('https://fe4150e6.ngrok.io/myWork', {
+ async setWorkLocation() {
+   await this.getWorkLatLong()
+   fetch('http://b82a27f2.ngrok.io/myWork', {
      method: 'POST',
      headers: {
        "Content-Type": "application/json"
      },
      credentials: 'include',
      body: JSON.stringify({
+       address: this.state.address,
        latitude: this.state.latitude,
        longitude: this.state.longitude,
      })
@@ -87,9 +91,8 @@ export default class WorkScreen extends React.Component {
    .then(response => response.json())
    .then(responseJson => {
      if(responseJson.success) {
-       this.props.navigation.navigate('Work');
-       console.log(responseJson);
-
+       console.log('@@setWorkLocation', responseJson)
+       this.props.navigation.navigate('Browse');
      } else {
        console.log('unsuccessful response')
      }
@@ -144,7 +147,7 @@ export default class WorkScreen extends React.Component {
        </View>
          <View>
            <FormInput
-             placeholder="Enter your home address"
+             placeholder="Enter your work address"
              onChangeText={(text) => this.setState({address: text})}
              value={this.state.address}
            />
@@ -152,7 +155,7 @@ export default class WorkScreen extends React.Component {
              {this.state.address ? null: 'this field is required'}
            </FormValidationMessage>
          </View>
-         <Button onPress={() => this.getWorkLatLong()} title='save'
+         <Button onPress={() => this.setWorkLocation()} title='save'
         backgroundColor={'#66cdff'}
        style={{padding: 10}}/>
      <MapView

@@ -21,7 +21,7 @@ export default class RegisterScreen extends React.Component {
   });
 
   register(){
-    fetch('https://ee4f8815.ngrok.io/register', {
+    fetch('http://b82a27f2.ngrok.io/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -57,12 +57,37 @@ export default class HouseScreen extends React.Component {
    .then(response => response.json())
    .then(responseJson => {
      if(responseJson) {
-       console.log(responseJson)
+       console.log('@@ HouseScreen getHouseLatLong',responseJson)
        this.setState({
          latitude: Number(responseJson.results[0].geometry.location.lat),
          longitude: Number(responseJson.results[0].geometry.location.lng)
        })
-
+       fetch('http://b82a27f2.ngrok.io/myHouse', {
+         method: 'POST',
+         headers: {
+           "Content-Type": "application/json"
+         },
+         credentials: 'include',
+         body: JSON.stringify({
+           latitude: this.state.latitude,
+           longitude: this.state.longitude,
+           monthlyRent: this.state.monthlyRent,
+           sqft: this.state.sqft,
+           address: this.state.address
+         })
+       })
+       .then(response => response.json())
+       .then(responseJson => {
+         if(responseJson.success) {
+           this.props.navigation.navigate('Work');
+           console.log(responseJson);
+         } else {
+           console.log('unsuccessful response')
+         }
+       })
+       .catch((err) => {
+         console.log('error fetching', err)
+       });
      } else {
        console.log('unsuccessful response')
      }
@@ -73,34 +98,35 @@ export default class HouseScreen extends React.Component {
  }
 
 
- setHouseLocation() {
-   fetch('https://fe4150e6.ngrok.io/myHouse', {
-     method: 'POST',
-     headers: {
-       "Content-Type": "application/json"
-     },
-     credentials: 'include',
-     body: JSON.stringify({
-       latitude: this.state.latitude,
-       longitude: this.state.longitude,
-       monthlyRent: this.state.monthlyRent,
-       sqft: this.state.sqft,
-
-     })
-   })
-   .then(response => response.json())
-   .then(responseJson => {
-     if(responseJson.success) {
-       this.props.navigation.navigate('Work');
-       console.log(responseJson);
-
-     } else {
-       console.log('unsuccessful response')
-     }
-   })
-   .catch((err) => {
-     console.log('error fetching', err)
-   });
+ async setHouseLocation() {
+   await this.getHouseLatLong();
+   console.log('@@setHouseLocation', this.state)
+   // fetch('http://b82a27f2.ngrok.io/myHouse', {
+   //   method: 'POST',
+   //   headers: {
+   //     "Content-Type": "application/json"
+   //   },
+   //   credentials: 'include',
+   //   body: JSON.stringify({
+   //     latitude: this.state.latitude,
+   //     longitude: this.state.longitude,
+   //     monthlyRent: this.state.monthlyRent,
+   //     sqft: this.state.sqft,
+   //     address: this.state.address
+   //   })
+   // })
+   // .then(response => response.json())
+   // .then(responseJson => {
+   //   if(responseJson.success) {
+   //     this.props.navigation.navigate('Work');
+   //     console.log(responseJson);
+   //   } else {
+   //     console.log('unsuccessful response')
+   //   }
+   // })
+   // .catch((err) => {
+   //   console.log('error fetching', err)
+   // });
  }
 
  componentDidMount(){
@@ -180,7 +206,7 @@ export default class HouseScreen extends React.Component {
          </View>
          <Button backgroundColor={'#66cdff'}
            style={{padding: 10}}
-           onPress={() => this.getHouseLatLong()} title='save' />
+           onPress={() => this.setHouseLocation()} title='save' />
      </View>
      <MapView
        style={{flex: 1}}
