@@ -9,6 +9,7 @@ export default class UploadScreen extends React.Component {
   static navigationOptions = {
     title: 'Upload',
     tabBarLabel: 'Upload',
+    drawerLabel: 'Upload',
     drawerIcon: ({tintColor}) => {
       return (
         <MaterialIcons
@@ -57,7 +58,7 @@ export default class UploadScreen extends React.Component {
   };
 
   postPicture() {
-    const apiUrl = 'https://fe4150e6.ngrok.io/upload';
+    const apiUrl = 'http://b82a27f2.ngrok.io/upload';
     const formData = new FormData();
 
     this.state.images.forEach((photo) => {
@@ -101,7 +102,7 @@ export default class UploadScreen extends React.Component {
         <Text style={{fontFamily: 'proximaNova', fontSize: 30}}>Update Home Info</Text>
       ) : null
       }
-      <View style={{padding: 30}}>
+      {/* <View style={{padding: 30}}>
         <TouchableOpacity
           onPress={() => this.props.navigation.openDrawer()}>
           <MaterialIcons
@@ -112,7 +113,7 @@ export default class UploadScreen extends React.Component {
           </MaterialIcons>
         </TouchableOpacity>
         <TextInput>Upload House Photos</TextInput>
-      </View>
+      </View> */}
       <ScrollView>
         <View style={{flex:1, justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
           {images &&
@@ -121,7 +122,7 @@ export default class UploadScreen extends React.Component {
                 <View key={photo} style={{ width: 110, height: 110, padding: 3}}>
                   <ImageBackground source={{ uri: photo }} style={{ width: 110, height: 110}}>
                     <TouchableOpacity onPress={() => this.deletePicture(photo)}>
-                      <Ionicons name="ios-close-circle" size={32} />
+                      <Ionicons type='evilicon' name="ios-close-circle" size={32} />
                     </TouchableOpacity>
                   </ImageBackground>
                 </View>

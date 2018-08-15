@@ -95,7 +95,7 @@ componentDidMount(){
  }
 
  getHouses() {
-   fetch('https://fe4150e6.ngrok.io/houses', {
+   fetch('http://b82a27f2.ngrok.io/houses', {
      method: 'GET'
    })
    .then(response => response.json())
@@ -114,14 +114,12 @@ componentDidMount(){
  }
 
  getPhotos(){
-    fetch('https://ee4f8815.ngrok.io/photos', {
+    fetch('http://b82a27f2.ngrok.io/photos', {
       method: 'GET'
     })
     .then(response => response.json())
     .then(responseJson => {
       if (responseJson.success){
-        console.log(responseJson.pictures.length)
-
        responseJson.pictures.map(picture => {
          this.setState({images: this.state.images.concat([picture])})
        })
@@ -145,15 +143,15 @@ componentDidMount(){
              longitude: Number(house.longitude),
            }}
            title={house.monthlyRent + ''}
-           onSelect={() => this.props.navigation.navigate('Switch', {houseId: house._id})}>
+           onSelect={() => this.props.navigation.navigate('Switch', { houseId: house._id })}>
          </MapView.Marker>)
        })
      }
    }
 
    return (
-     <View style={{flex: 1, height: 150}}>
-       <View style={{padding: 30}}>
+     <View style={{flex: 1}}>
+       {/* <View style={{padding: 30}}>
          <TouchableOpacity
            onPress={() => this.props.navigation.openDrawer()}>
            <MaterialIcons
@@ -169,7 +167,7 @@ componentDidMount(){
        <TouchableOpacity>
          <Image source={'../menu.png'}></Image>
        </TouchableOpacity>
-       </View>
+       </View> */}
       <MapView
        style={{flex: 1}}
        region={{
@@ -180,11 +178,11 @@ componentDidMount(){
        onRegionChangeComplete={() => {
          AsyncStorage.setItem('latitude', JSON.stringify(this.state.latitude))
          AsyncStorage.setItem('longitude', JSON.stringify(this.state.longitude))
-       }}>
+       }}
+       >
        {renderPins()}
-
      </MapView>
-     <ScrollView
+     {/* <ScrollView
        style={{flex: 1}}
        showsHorizontalScrollIndicator={true}
        horizontal={true}
@@ -195,7 +193,7 @@ componentDidMount(){
            <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
            </TouchableOpacity>
          ))}
-     </ScrollView>
+     </ScrollView> */}
    </View>
    )
  }
