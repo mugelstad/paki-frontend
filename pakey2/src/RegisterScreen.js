@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text} from 'react-native'
+import { View, Text, Image } from 'react-native'
 import {
   FormLabel,
   FormInput,
@@ -58,6 +58,7 @@ export default class RegisterScreen extends React.Component {
           <FormLabel>PASSWORD</FormLabel>
           <FormInput
             placeholder="password"
+            secureTextEntry={true}
             onChangeText={(text) => this.setState({password: text})}
             value={this.state.password}
           />

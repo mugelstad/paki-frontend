@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text} from 'react-native'
+import { View, Text, Image, AsyncStorage} from 'react-native'
 import {
   FormLabel,
   FormInput,
@@ -19,6 +19,19 @@ export default class LoginScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Login'
   });
+
+  componentDidMount(){
+    AsyncStorage.getItem('user')
+    .then(result => {
+      var parsedResult = JSON.parse(result);
+      if (parsedResult.username && parsedResult.password){
+        this.state.username = parsedResult.username;
+        this.state.password = parsedResult.password;
+        this.login()
+      }
+    })
+    .catch(err => {console.error(err)})
+  }
 
   login(){
     fetch('http://b82a27f2.ngrok.io/auth/local', {
@@ -64,6 +77,7 @@ export default class LoginScreen extends React.Component {
           <FormLabel>PASSWORD</FormLabel>
           <FormInput
             placeholder="password"
+            secureTextEntry={true}
             onChangeText={(text) => this.setState({password: text})}
             value={this.state.password}
           />
@@ -75,6 +89,10 @@ export default class LoginScreen extends React.Component {
           backgroundColor={'#66c2ff'}
           style={{padding: 10}}
           onPress={() => {
+            AsyncStorage.setItem('user', JSON.stringify({
+              username: this.state.username,
+              password: this.state.password
+            }));
             this.login();
           }}/>
         <Button raised title='register'
