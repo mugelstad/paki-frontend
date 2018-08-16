@@ -7,7 +7,6 @@ import RegisterScreen from './src/RegisterScreen'
 import UploadScreen from './src/UploadScreen'
 import WorkScreen from './src/WorkScreen'
 import BrowseScreen from './src/BrowseScreen'
-import MenuNavigator from './src/Navigate'
 import SwitchScreen from './src/SwitchScreen'
 import SavedScreen from './src/SavedScreen'
 import OfferScreen from './src/OfferScreen'
@@ -66,8 +65,8 @@ const OfferStack = createStackNavigator({
 OfferStack.navigationOptions = {
   tabBarLabel: 'Offers',
   tabBarIcon: () => (
-    <Icon.Ionicons
-      name='ios-chatboxes-outline'
+    <Icon.EvilIcons
+      name='comment'
       size={26}
     />)
 }
@@ -75,20 +74,6 @@ const tabs = createBottomTabNavigator({
   Browse: AppStack, Saved: SavedStack, Offers: OfferStack, Settings: SettingsStack
 })
 
-
-// HomeStack.navigationOptions = {
-//   tabBarLabel: 'Read',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={
-//         Platform.OS === 'ios'
-//           ? `ios-glasses${focused ? '' : '-outline'}`
-//           : 'md-glasses'
-//       }
-//     />
-//   ),
-// };
 export default createSwitchNavigator({
   Main: tabs,
   Auth: AuthStack
@@ -96,5 +81,3 @@ export default createSwitchNavigator({
 {
   initialRouteName: 'Auth'
 })
-
-// export default MenuNavigator;

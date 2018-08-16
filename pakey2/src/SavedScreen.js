@@ -30,7 +30,7 @@ export default class SavedScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         {this.state.houses.map(house =>
-          <View style={{padding: 20}}>
+          <View key={this.state.houses.indexOf(house)} style={{padding: 20}}>
             <TouchableOpacity style={{padding: 10}}>
               <Text>address: {house.address}</Text>
               <Text>monthly rent: ${house.monthlyRent}</Text>

@@ -35,18 +35,6 @@ export default class WorkScreen extends React.Component {
  static navigationOptions = {
    title: 'Work',
    tabBarLabel: 'Work',
-   drawerLabel: 'Work',
-   drawerIcon: ({tintColor}) => {
-     return (
-       <MaterialIcons
-         name="work"
-         size={24}
-         style={{color: tintColor}}
-         >
-
-         </MaterialIcons>
-     )
-   }
  }
 
  getWorkLatLong(){
@@ -133,36 +121,24 @@ export default class WorkScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1}}>
-       <View style={{padding: 30}}>
-         <TouchableOpacity
-           onPress={() => this.props.navigation.openDrawer()}>
-           <MaterialIcons
-             name="menu"
-             size={24}
-             style={{color: 'black'}}
-             >
-           </MaterialIcons>
-         </TouchableOpacity>
-         <TextInput>Work Information</TextInput>
+       <View>
+         <FormInput
+           placeholder="Enter your work address"
+           onChangeText={(text) => this.setState({address: text})}
+           value={this.state.address}
+         />
+         <FormValidationMessage>
+           {this.state.address ? null: 'this field is required'}
+         </FormValidationMessage>
        </View>
-         <View>
-           <FormInput
-             placeholder="Enter your work address"
-             onChangeText={(text) => this.setState({address: text})}
-             value={this.state.address}
-           />
-           <FormValidationMessage>
-             {this.state.address ? null: 'this field is required'}
-           </FormValidationMessage>
-         </View>
-         <Button onPress={() => this.setWorkLocation()} title='save'
-        backgroundColor={'#66cdff'}
-       style={{padding: 10}}/>
+       <Button onPress={() => this.setWorkLocation()} title='save'
+         backgroundColor={'#66cdff'}
+         style={{padding: 10}}/>
      <MapView
        style={{flex: 1}}
        region={{
-         latitude: this.state.latitude,
-         longitude: this.state.longitude,
+         latitude: parseFloat(this.state.latitude),
+         longitude: parseFloat(this.state.longitude),
          latitudeDelta: .5,
          longitudeDelta: .25}}
        onRegionChangeComplete={() => {

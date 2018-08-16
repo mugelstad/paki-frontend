@@ -32,30 +32,13 @@ export default class BrowseScreen extends React.Component {
      latitude: 0,
      longitude: 0,
      images: [],
-     pins: [{
-       id: '123',
-       coordinate: {
-         longitude: -122.414053,
-         latitude: 37.789875
-       }
-     }],
      houses: [],
    }
  }
 
  static navigationOptions = {
    title: 'Browse',
-   tabBarLabel: 'Browse',
-   drawerIcon: ({tintColor}) => {
-     return (
-       <MaterialIcons
-         name="near-me"
-         size={24}
-         style={{color: tintColor}}
-         >
-         </MaterialIcons>
-     )
-   }
+   tabBarLabel: 'Browse'
  }
 
 componentDidMount(){
@@ -138,6 +121,7 @@ componentDidMount(){
      if (this.state.houses[0]) {
        return this.state.houses.map(house => {
          return (<MapView.Marker
+           key={house._id}
            coordinate={{
              latitude: Number(house.latitude),
              longitude: Number(house.longitude),
@@ -151,28 +135,11 @@ componentDidMount(){
 
    return (
      <View style={{flex: 1}}>
-       {/* <View style={{padding: 30}}>
-         <TouchableOpacity
-           onPress={() => this.props.navigation.openDrawer()}>
-           <MaterialIcons
-             name="menu"
-             size={24}
-             style={{color: 'black'}}
-             >
-           </MaterialIcons>
-         </TouchableOpacity>
-         <TextInput>Browse Houses</TextInput>
-       </View>
-       <View>
-       <TouchableOpacity>
-         <Image source={'../menu.png'}></Image>
-       </TouchableOpacity>
-       </View> */}
       <MapView
        style={{flex: 1}}
        region={{
-         latitude: this.state.latitude,
-         longitude: this.state.longitude,
+         latitude: parseFloat(this.state.latitude),
+         longitude: parseFloat(this.state.longitude),
          latitudeDelta: .25,
          longitudeDelta: .0125}}
        onRegionChangeComplete={() => {
@@ -189,7 +156,7 @@ componentDidMount(){
        bounces={true}
        >
          {this.state.images.map(picture => (
-           <TouchableOpacity>
+           <TouchableOpacity key={this.state.images.indexOf(picture)}>
            <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
            </TouchableOpacity>
          ))}

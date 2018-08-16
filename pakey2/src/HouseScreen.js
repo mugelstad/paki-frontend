@@ -189,8 +189,8 @@ export default class HouseScreen extends React.Component {
      <MapView
        style={{flex: 1}}
        region={{
-         latitude: this.state.latitude,
-         longitude: this.state.longitude,
+         latitude: parseFloat(this.state.latitude),
+         longitude: parseFloat(this.state.longitude),
          latitudeDelta: .0625,
          longitudeDelta: .03125}}
        onRegionChangeComplete={() => {

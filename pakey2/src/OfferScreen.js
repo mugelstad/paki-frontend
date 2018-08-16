@@ -35,7 +35,7 @@ export default class MessagesScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         {this.state.users.map(user =>
-          <View style={{padding: 20}}>
+          <View key={this.state.users.indexOf(user)} style={{padding: 20}}>
             <TouchableOpacity
               style={{padding: 10, borderRadius: 4, borderWidth: 0.5, borderColor: '#d6d7da'}}
               onPress={() => this.props.navigation.navigate('Chat', {id: user._id})}>

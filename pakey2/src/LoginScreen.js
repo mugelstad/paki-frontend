@@ -21,16 +21,15 @@ export default class LoginScreen extends React.Component {
   });
 
   componentDidMount(){
-    AsyncStorage.getItem('user')
-    .then(result => {
-      var parsedResult = JSON.parse(result);
-      if (parsedResult.username && parsedResult.password){
-        this.state.username = parsedResult.username;
-        this.state.password = parsedResult.password;
-        this.login()
+    fetch('http://b82a27f2.ngrok.io/findSession', {
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+      if (responseJson.success){
+        this.props.navigation.navigate('Browse')
       }
     })
-    .catch(err => {console.error(err)})
   }
 
   login(){
@@ -89,10 +88,6 @@ export default class LoginScreen extends React.Component {
           backgroundColor={'#66c2ff'}
           style={{padding: 10}}
           onPress={() => {
-            AsyncStorage.setItem('user', JSON.stringify({
-              username: this.state.username,
-              password: this.state.password
-            }));
             this.login();
           }}/>
         <Button raised title='register'
