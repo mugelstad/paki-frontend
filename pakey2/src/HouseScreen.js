@@ -35,16 +35,6 @@ export default class HouseScreen extends React.Component {
  static navigationOptions = {
    title: 'House',
    tabBarLabel: 'House',
-   drawerIcon: ({tintColor}) => {
-     return (
-       <MaterialIcons
-         name="home"
-         size={24}
-         style={{color: tintColor}}
-         >
-         </MaterialIcons>
-     )
-   }
  }
 
  getHouseLatLong(){
@@ -160,18 +150,6 @@ export default class HouseScreen extends React.Component {
  render() {
    return (
      <View style={{flex: 1}}>
-       <View style={{padding: 30}}>
-         <TouchableOpacity
-           onPress={() => this.props.navigation.openDrawer()}>
-           <MaterialIcons
-             name="menu"
-             size={24}
-             style={{color: 'black'}}
-             >
-           </MaterialIcons>
-         </TouchableOpacity>
-         <TextInput>House Information</TextInput>
-       </View>
        <View>
          <View>
            <FormInput

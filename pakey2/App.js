@@ -10,6 +10,8 @@ import BrowseScreen from './src/BrowseScreen'
 import MenuNavigator from './src/Navigate'
 import SwitchScreen from './src/SwitchScreen'
 import SavedScreen from './src/SavedScreen'
+import OfferScreen from './src/OfferScreen'
+import ChatScreen from './src/ChatScreen'
 
 const AppStack = createStackNavigator({
   Browse: BrowseScreen,
@@ -57,10 +59,20 @@ SavedStack.navigationOptions = {
     />)
 }
 
+const OfferStack = createStackNavigator({
+  Offer: OfferScreen, Chat: ChatScreen
+})
 
-
+OfferStack.navigationOptions = {
+  tabBarLabel: 'Offers',
+  tabBarIcon: () => (
+    <Icon.Ionicons
+      name='ios-chatboxes-outline'
+      size={26}
+    />)
+}
 const tabs = createBottomTabNavigator({
-  Browse: AppStack, Saved: SavedStack, Settings: SettingsStack
+  Browse: AppStack, Saved: SavedStack, Offers: OfferStack, Settings: SettingsStack
 })
 
 

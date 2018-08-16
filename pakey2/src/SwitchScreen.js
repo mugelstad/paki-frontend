@@ -45,7 +45,8 @@ export default class SwitchScreen extends React.Component {
      userhouseRent: 0,
      sqft: 0,
      isDialogVisible: false,
-     saved: false
+     saved: true,
+     offered: false
    };
  }
 
@@ -144,8 +145,24 @@ export default class SwitchScreen extends React.Component {
    })
  }
 
- sendRequest(inputText){
-
+ sendOffer(inputText){
+   fetch('http://b82a27f2.ngrok.io/sendOffer', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     credentials: 'include',
+     body: JSON.stringify({
+       otherhouseId: this.props.navigation.getParam('houseId'),
+       amount: `${this.state.monthlyRent > this.state.userhouseRent ? '' : '-'}${inputText}`
+     })
+   })
+   .then(resp => resp.json())
+   .then(responseJson => {
+     if (responseJson.success) {
+       this.showDialog(false)
+     }
+   })
  }
 
  saveHouse(){
@@ -250,7 +267,7 @@ export default class SwitchScreen extends React.Component {
         dialogStyle={{backgroundColor: 'white'}}
         message={"enter amount to switch"}
         hintInput ={"$0-300"}
-        submitInput={ (inputText) => {this.sendRequest(inputText)} }
+        submitInput={ (inputText) => {this.sendOffer(inputText)} }
         closeDialog={ () => {this.showDialog(false)}}>
       </DialogInput>
       {this.state.saved ?
