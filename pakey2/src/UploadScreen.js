@@ -86,6 +86,16 @@ export default class UploadScreen extends React.Component {
     this.setState({images: arrayMinusOne})
   }
 
+  logout(){
+    fetch('http://b82a27f2.ngrok.io/api/logout', {
+      method: 'GET'
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+      this.props.navigation.navigate('Login')
+    })
+  }
+
   render() {
   let { images } = this.state;
 
@@ -135,6 +145,11 @@ export default class UploadScreen extends React.Component {
             backgroundColor={'#66c2ff'}
             style={{padding: 10}}
             onPress={() => {this.props.navigation.navigate('Work')}}/>
+        </View>
+        <View style={{paddingBottom: 0, paddingLeft: 20, paddingRight: 20, paddingTop: 0}}>
+          <Button raised title='Logout'
+            style={{padding: 10}}
+            onPress={() => {this.logout()}}/>
         </View>
       </ScrollView>
     </View>
