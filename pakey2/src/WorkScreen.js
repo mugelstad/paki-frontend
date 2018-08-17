@@ -1,5 +1,5 @@
 import { MapView } from 'expo';
-import GOOGLE_MAPS_API_KEY from '../secrets'
+import GOOGLE_MAPS_API_KEY from '../googleMapsAPIKey'
 import React from 'react';
 import {
   TouchableOpacity,

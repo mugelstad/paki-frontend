@@ -8,6 +8,11 @@ export default class SavedScreen extends React.Component {
       houses: []
     }
   }
+
+  static navigationOptions = {
+    title: 'Saved'
+  }
+
   componentDidMount(){
     fetch('http://eecea53d.ngrok.io/saved', {
       method: 'GET',
@@ -32,9 +37,9 @@ export default class SavedScreen extends React.Component {
         {this.state.houses.map(house =>
           <View key={this.state.houses.indexOf(house)} style={{padding: 20}}>
             <TouchableOpacity style={{padding: 10}}>
-              <Text>address: {house.address}</Text>
-              <Text>monthly rent: ${house.monthlyRent}</Text>
-              <Text>area: {house.sqft} sqft</Text>
+              <Text>Address: {house.address}</Text>
+              <Text>Monthly Rent: ${house.monthlyRent}</Text>
+              <Text>Area: {house.sqft} sqft</Text>
             </TouchableOpacity>
           </View>)}
       </View>
