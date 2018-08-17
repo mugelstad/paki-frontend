@@ -1,5 +1,4 @@
 import { MapView } from 'expo';
-// import GOOGLE_MAPS_API_KEY from '../secrets'
 import React from 'react';
 import {
   TouchableOpacity,
@@ -20,10 +19,10 @@ import {
   FormInput,
   FormValidationMessage,
   Button
-} from 'react-native-elements'
+} from 'react-native-elements';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import styles from '../StyleSheet'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import styles from '../StyleSheet';
 
 export default class BrowseScreen extends React.Component {
  constructor(){
@@ -32,7 +31,7 @@ export default class BrowseScreen extends React.Component {
      latitude: 0,
      longitude: 0,
      images: [],
-     houses: [],
+     houses: []
    }
  }
 
@@ -123,8 +122,8 @@ componentDidMount(){
          return (<MapView.Marker
            key={house._id}
            coordinate={{
-             latitude: Number(house.latitude),
-             longitude: Number(house.longitude),
+             latitude: parseFloat(house.latitude),
+             longitude: parseFloat(house.longitude)
            }}
            title={house.monthlyRent + ''}
            onSelect={() => this.props.navigation.navigate('Switch', { houseId: house._id })}>

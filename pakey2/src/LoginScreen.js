@@ -27,7 +27,7 @@ export default class LoginScreen extends React.Component {
     .then(response => response.json())
     .then(responseJson => {
       if (responseJson.success){
-        this.props.navigation.navigate('Upload')
+        this.props.navigation.navigate('Browse')
       }
     })
   }

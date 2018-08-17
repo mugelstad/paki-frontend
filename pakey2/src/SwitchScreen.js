@@ -1,5 +1,5 @@
 import { MapView } from 'expo';
-import GOOGLE_MAPS_API_KEY from '../secrets'
+import GOOGLE_MAPS_API_KEY from '../googleMapsAPIKey'
 import React from 'react';
 import {
   TouchableOpacity,
@@ -223,10 +223,10 @@ export default class SwitchScreen extends React.Component {
        </MapView>
       </View>
       <View style={{padding: 20}}>
-        <Text>monthly rent: ${this.state.monthlyRent} </Text>
-        <Text>my rent: ${this.state.userhouseRent}</Text>
-        <Text>address: {this.state.address} </Text>
-        <Text>area: {this.state.sqft} sqft</Text>
+        <Text>Monthly Rent: ${this.state.monthlyRent} </Text>
+        <Text>My Rent: ${this.state.userhouseRent}</Text>
+        <Text>Address: {this.state.address} </Text>
+        <Text>Area: {this.state.sqft} sqft</Text>
       </View>
       <View style={{paddingBottom: 0, paddingLeft: 20, paddingRight: 20, paddingTop: 20}}>
         <Button raised title={this.state.monthlyRent > this.state.userhouseRent ? 'Offer' : 'Request'}
