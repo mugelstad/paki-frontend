@@ -38,7 +38,7 @@ export default class SwitchScreen extends React.Component {
      userhouseRent: 0,
      sqft: 0,
      isDialogVisible: false,
-     saved: true,
+     saved: false,
      offered: false
    };
  }
@@ -159,6 +159,7 @@ export default class SwitchScreen extends React.Component {
        this.setState({
          saved: true
        })
+       AsyncStorage.setItem('saved', JSON.stringify(this.state.saved));
      }
    })
  }
@@ -180,12 +181,12 @@ export default class SwitchScreen extends React.Component {
        this.setState({
          saved: false
        })
+       AsyncStorage.setItem('saved', JSON.stringify(this.state.saved));
      }
    })
  }
 
  render() {
-   AsyncStorage.setItem('saved', JSON.stringify(this.state.saved));
    return (
      <View style={{flex: 1, height: 150}}>
        <ScrollView>
@@ -196,8 +197,8 @@ export default class SwitchScreen extends React.Component {
          bounces={true}
          >
            {this.state.images.map(picture => (
-             <TouchableOpacity>
-               <Image key={picture.length} source={{uri: `data:image/png;base64,${picture}`}} style={{height: 300, width: 300}}/>
+             <TouchableOpacity key={this.state.images.indexOf(picture)}>
+               <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 300, width: 300}}/>
              </TouchableOpacity>
            ))}
        </ScrollView>

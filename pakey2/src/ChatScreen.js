@@ -28,18 +28,19 @@ export default class MessagesScreen extends React.Component {
 
   }
   render () {
+    console.log(this.state.offers)
     return (
       <View style={{flex: 1}}>
-      {this.state.offers.map(offer =>
-        <View style={{padding: 20}}>
-          <TouchableOpacity
-            style={{padding: 10, borderRadius: 4, borderWidth: 0.5, borderColor: '#d6d7da'}}>
-            <Text>{user.username}</Text>
-            {/*<Text>address: {user.house.address}</Text>
-            <Text>monthly rent: ${user.house.monthlyRent}</Text>
-            <Text>area: {user.house.sqft} sqft</Text>*/}
-          </TouchableOpacity>
-        </View>)}
+        {/* <View>
+          <Text>House:</Text>
+          <Text>Address: {this.state.house.address}</Text>
+          <Text>Monthly Rent: {this.state.house.monthlyRent}</Text>
+          <Text>Square Feet: {this.state.house.sqft}</Text>
+        </View> */}
+        {this.state.offers.map(offer =>
+          <View key={this.state.offers.indexOf(offer)} style={{padding: 20}}>
+            <Text>{offer.amount}</Text>
+          </View>)}
       </View>
     )
   }
