@@ -14,7 +14,7 @@ export default class MessagesScreen extends React.Component {
   }
 
   componentDidMount(){
-    fetch('http://b82a27f2.ngrok.io/offers', {
+    fetch('http://eecea53d.ngrok.io/offers', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

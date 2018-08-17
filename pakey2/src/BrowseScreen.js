@@ -1,5 +1,5 @@
 import { MapView } from 'expo';
-import GOOGLE_MAPS_API_KEY from '../secrets'
+// import GOOGLE_MAPS_API_KEY from '../secrets'
 import React from 'react';
 import {
   TouchableOpacity,
@@ -54,8 +54,8 @@ componentDidMount(){
        navigator.geolocation.getCurrentPosition(
          (success) => {
            this.setState({
-             latitude: success.coords.latitude,
-             longitude: success.coords.longitude
+             latitude: parseFloat(success.coords.latitude),
+             longitude: parseFloat(success.coords.longitude)
            })
          }, (error) => {
            console.log('error', error)
@@ -78,7 +78,7 @@ componentDidMount(){
  }
 
  getHouses() {
-   fetch('http://b82a27f2.ngrok.io/houses', {
+   fetch('http://eecea53d.ngrok.io/houses', {
      method: 'GET'
    })
    .then(response => response.json())
@@ -97,7 +97,7 @@ componentDidMount(){
  }
 
  getPhotos(){
-    fetch('http://b82a27f2.ngrok.io/photos', {
+    fetch('http://eecea53d.ngrok.io/photos', {
       method: 'GET'
     })
     .then(response => response.json())
@@ -149,18 +149,6 @@ componentDidMount(){
        >
        {renderPins()}
      </MapView>
-     {/* <ScrollView
-       style={{flex: 1}}
-       showsHorizontalScrollIndicator={true}
-       horizontal={true}
-       bounces={true}
-       >
-         {this.state.images.map(picture => (
-           <TouchableOpacity key={this.state.images.indexOf(picture)}>
-           <Image source={{uri: `data:image/png;base64,${picture}`}} style={{height: 150, width: 150}}/>
-           </TouchableOpacity>
-         ))}
-     </ScrollView> */}
    </View>
    )
  }

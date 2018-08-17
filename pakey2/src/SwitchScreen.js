@@ -89,7 +89,7 @@ export default class SwitchScreen extends React.Component {
 
  getPhotosByHouseId(){
    console.log('@@switchScreen this.props.navigation.getParam', this.props.navigation.getParam('houseId'))
-   fetch(`http://b82a27f2.ngrok.io/switchInfo?houseId=${this.props.navigation.getParam('houseId')}`, {
+   fetch(`http://eecea53d.ngrok.io/switchInfo?houseId=${this.props.navigation.getParam('houseId')}`, {
      method: 'GET'
    })
    .then(response => response.json())
@@ -123,7 +123,7 @@ export default class SwitchScreen extends React.Component {
  }
 
  sendOffer(inputText){
-   fetch('http://b82a27f2.ngrok.io/sendOffer', {
+   fetch('http://eecea53d.ngrok.io/sendOffer', {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ export default class SwitchScreen extends React.Component {
  }
 
  saveHouse(){
-   fetch('http://b82a27f2.ngrok.io/saveInterested', {
+   fetch('http://eecea53d.ngrok.io/saveInterested', {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json'
@@ -165,7 +165,7 @@ export default class SwitchScreen extends React.Component {
  }
 
  removeHouse(){
-   fetch('http://b82a27f2.ngrok.io/removeInterested', {
+   fetch('http://eecea53d.ngrok.io/removeInterested', {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json'

@@ -52,7 +52,7 @@ export default class UploadScreen extends React.Component {
   };
 
   postPicture() {
-    const apiUrl = 'http://b82a27f2.ngrok.io/upload';
+    const apiUrl = 'http://eecea53d.ngrok.io/upload';
     const formData = new FormData();
 
     this.state.images.forEach((photo) => {
@@ -87,7 +87,7 @@ export default class UploadScreen extends React.Component {
   }
 
   logout(){
-    fetch('http://b82a27f2.ngrok.io/api/logout', {
+    fetch('http://eecea53d.ngrok.io/api/logout', {
       method: 'GET'
     })
     .then(response => response.json())

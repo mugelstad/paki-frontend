@@ -52,7 +52,7 @@ export default class HouseScreen extends React.Component {
          latitude: Number(responseJson.results[0].geometry.location.lat),
          longitude: Number(responseJson.results[0].geometry.location.lng)
        })
-       fetch('http://b82a27f2.ngrok.io/myHouse', {
+       fetch('http://eecea53d.ngrok.io/myHouse', {
          method: 'POST',
          headers: {
            "Content-Type": "application/json"
@@ -91,7 +91,7 @@ export default class HouseScreen extends React.Component {
  async setHouseLocation() {
    await this.getHouseLatLong();
    console.log('@@setHouseLocation', this.state)
-   // fetch('http://b82a27f2.ngrok.io/myHouse', {
+   // fetch('http://eecea53d.ngrok.io/myHouse', {
    //   method: 'POST',
    //   headers: {
    //     "Content-Type": "application/json"
