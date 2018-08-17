@@ -21,19 +21,19 @@ export default class LoginScreen extends React.Component {
   });
 
   componentDidMount(){
-    fetch('http://b82a27f2.ngrok.io/findSession', {
+    fetch('http://eecea53d.ngrok.io/findSession', {
       method: 'GET'
     })
     .then(response => response.json())
     .then(responseJson => {
       if (responseJson.success){
-        this.props.navigation.navigate('Browse')
+        this.props.navigation.navigate('Upload')
       }
     })
   }
 
   login(){
-    fetch('http://b82a27f2.ngrok.io/auth/local', {
+    fetch('http://eecea53d.ngrok.io/auth/local', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
